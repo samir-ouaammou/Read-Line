@@ -6,7 +6,7 @@
 /*   By: souaammo <souaammo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 19:12:06 by souaammo          #+#    #+#             */
-/*   Updated: 2024/11/12 18:55:28 by souaammo         ###   ########.fr       */
+/*   Updated: 2024/11/12 19:48:22 by souaammo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static char	*ft_read_size(int fd, char *line)
 	while ((ft_strchar(line, '\n') == 0) && read_byte > 0)
 	{
 		read_byte = read(fd, temp, BUFFER_SIZE);
-		if (read_byte == -1)
+		if (read_byte == -1 || read_byte == 0)
 			return (ft_free(line));
 		temp[read_byte] = '\0';
 		line = ft_strjoin(line, temp);
@@ -56,21 +56,27 @@ static char	*ft_read_size(int fd, char *line)
 static char	*ft_read_line(char *str)
 {
 	char	*line;
-	size_t	index1;
+	size_t	index;
+	size_t	temp;
 
-	index1 = 0;
-	while ((str[index1]) && (str[index1 != '\n']))
-		index1++;
-	line = (char *)malloc((index1 + 1) * sizeof(char));
+	index = 0;
+	temp = 1;
+	while ((str[index]) && (str[index != '\n']))
+		index++;
+	if (str[index] == '\n')
+		temp = 2;
+	line = (char *)malloc((index + temp) * sizeof(char));
 	if (!line)
 		return (NULL);
-	index1 = 0;
-	while ((str[index1]) && (str[index1] != '\n'))
+	index = 0;
+	while ((str[index]) && (str[index] != '\n'))
 	{
-		line[index1] = str[index1];
-		index1++;
+		line[index] = str[index];
+		index++;
 	}
-	line[index1] = '\0';
+	if (temp == 2)
+		line[index++] = '\n';
+	line[index] = '\0';
 	return (line);
 }
 
