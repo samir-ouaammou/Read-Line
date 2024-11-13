@@ -6,26 +6,22 @@
 /*   By: souaammo <souaammo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 18:14:03 by souaammo          #+#    #+#             */
-/*   Updated: 2024/11/12 18:16:59 by souaammo         ###   ########.fr       */
+/*   Updated: 2024/11/13 15:13:50 by souaammo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int	ft_strchar(const char *str, char c)
+size_t	ft_strlen(const char *str)
 {
-	size_t	i;
+	size_t	l;
 
 	if (!str)
 		return (0);
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == c)
-			return (1);
-		i++;
-	}
-	return (0);
+	l = 0;
+	while (str[l])
+		l++;
+	return (l);
 }
 
 char	*ft_strdup(const char *str)
@@ -33,6 +29,8 @@ char	*ft_strdup(const char *str)
 	size_t	i;
 	char	*res;
 
+	if (!str)
+		return (NULL);
 	res = (char *)malloc(sizeof(char) * (ft_strlen(str) + 1));
 	if (!res)
 		return (NULL);
