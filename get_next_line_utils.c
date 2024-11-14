@@ -6,7 +6,7 @@
 /*   By: souaammo <souaammo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 18:14:03 by souaammo          #+#    #+#             */
-/*   Updated: 2024/11/14 17:47:16 by souaammo         ###   ########.fr       */
+/*   Updated: 2024/11/14 18:12:27 by souaammo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,5 @@ char	*ft_strjoin(char *s1, char *s2)
 	ft_strcat(result, s1);
 	ft_strcat(result, s2);
 	free(s1);
-	free(s2);
 	return (result);
 }

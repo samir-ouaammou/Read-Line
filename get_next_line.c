@@ -6,7 +6,7 @@
 /*   By: souaammo <souaammo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 19:12:06 by souaammo          #+#    #+#             */
-/*   Updated: 2024/11/14 17:47:25 by souaammo         ###   ########.fr       */
+/*   Updated: 2024/11/14 18:12:07 by souaammo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,21 @@
 
 char	*ft_read_buffer_size(int fd, char *save)
 {
-	char	*tmp;
+	char	tmp[BUFFER_SIZE + 1];
 	int		len;
 
 	while ((!ft_strchr(save, '\n')))
 	{
-		tmp = malloc(BUFFER_SIZE + 1);
-		if (!tmp)
-			return ((free(save)), NULL);
 		len = read(fd, tmp, BUFFER_SIZE);
 		if (len == 0)
 			break ;
 		if (len < 0)
-			return (free(tmp), NULL);
+			return (NULL);
 		tmp[len] = '\0';
 		save = ft_strjoin(save, tmp);
 		if (!save)
 			return (NULL);
 	}
-	free(tmp);
 	return (save);
 }
 
@@ -78,7 +74,7 @@ char	*ft_next_line(char **tmp)
 		i++;
 	save = malloc((ft_strlen((*tmp)) - i) + 1);
 	if (!save)
-		return (free(tmp), NULL);
+		return (free(save), NULL);
 	j = 0;
 	while ((*tmp)[i])
 	{
