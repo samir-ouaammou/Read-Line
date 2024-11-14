@@ -6,7 +6,7 @@
 /*   By: souaammo <souaammo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 19:12:06 by souaammo          #+#    #+#             */
-/*   Updated: 2024/11/14 18:12:07 by souaammo         ###   ########.fr       */
+/*   Updated: 2024/11/14 18:34:54 by souaammo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*ft_read_buffer_size(int fd, char *save)
 		tmp[len] = '\0';
 		save = ft_strjoin(save, tmp);
 		if (!save)
-			return (NULL);
+			return (free(save), (NULL));
 	}
 	return (save);
 }
@@ -46,7 +46,7 @@ char	*ft_read_line(char **save)
 		i++;
 	line = malloc(i + 1);
 	if (!line)
-		return (NULL);
+		return (free(line), NULL);
 	i = 0;
 	while (((*save)[i]) && ((*save)[i] != '\n'))
 	{
@@ -74,7 +74,7 @@ char	*ft_next_line(char **tmp)
 		i++;
 	save = malloc((ft_strlen((*tmp)) - i) + 1);
 	if (!save)
-		return (free(save), NULL);
+		return (free(save), free(tmp), NULL);
 	j = 0;
 	while ((*tmp)[i])
 	{
@@ -95,15 +95,12 @@ char	*get_next_line(int fd)
 		return (NULL);
 	save = ft_read_buffer_size(fd, save);
 	if (!save)
-		return (NULL);
+		return (free(save), NULL);
 	line = ft_read_line(&save);
 	if (!line)
-		return (NULL);
+		return (free(line), free(save), NULL);
 	save = ft_next_line(&save);
 	if (!save[0])
-	{
-		free(save);
-		save = NULL;
-	}
+		return (free(save), save = NULL, line);
 	return (line);
 }
