@@ -6,7 +6,7 @@
 /*   By: souaammo <souaammo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 18:14:03 by souaammo          #+#    #+#             */
-/*   Updated: 2024/11/13 15:13:50 by souaammo         ###   ########.fr       */
+/*   Updated: 2024/11/14 16:10:01 by souaammo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,26 +22,6 @@ size_t	ft_strlen(const char *str)
 	while (str[l])
 		l++;
 	return (l);
-}
-
-char	*ft_strdup(const char *str)
-{
-	size_t	i;
-	char	*res;
-
-	if (!str)
-		return (NULL);
-	res = (char *)malloc(sizeof(char) * (ft_strlen(str) + 1));
-	if (!res)
-		return (NULL);
-	i = 0;
-	while (str[i])
-	{
-		res[i] = str[i];
-		i++;
-	}
-	res[i] = '\0';
-	return (res);
 }
 
 static char	*ft_strcpy(char *dst, const char *src)
@@ -74,20 +54,17 @@ static char	*ft_strcat(char *dst, const char *src)
 	return (dst);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
-	char	*res;
+	char	*joined;
 
 	if (!s1 && !s2)
 		return (NULL);
-	if (!s1)
-		return (ft_strdup(s2));
-	if (!s2)
-		return (ft_strdup(s1));
-	res = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
-	if (!res)
+	joined = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
+	if (!joined)
 		return (NULL);
-	ft_strcpy(res, s1);
-	ft_strcat(res, s2);
-	return (res);
+	ft_strcpy(joined, s1);
+	ft_strcat(joined, s2);
+	free(s1);
+	return (joined);
 }
