@@ -6,116 +6,108 @@
 /*   By: souaammo <souaammo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 19:12:06 by souaammo          #+#    #+#             */
-/*   Updated: 2024/11/14 16:10:04 by souaammo         ###   ########.fr       */
+/*   Updated: 2024/11/14 17:47:25 by souaammo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int	ft_strchr(const char *str, char c)
+char	*ft_read_buffer_size(int fd, char *save)
 {
-	size_t	i;
+	char	*tmp;
+	int		len;
 
-	if (!str)
-		return (0);
-	i = 0;
-	while (str[i])
+	while ((!ft_strchr(save, '\n')))
 	{
-		if (str[i] == c)
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-char	*ft_read_buffer_size(int fd, char *line)
-{
-	char	*buffer;
-	int		read_byte;
-
-	buffer = NULL;
-	read_byte = 1337;
-	while ((ft_strchr(buffer, '\n')) && (read_byte > 0))
-	{
-		buffer = malloc(BUFFER_SIZE + 1);
-		if (!buffer)
+		tmp = malloc(BUFFER_SIZE + 1);
+		if (!tmp)
+			return ((free(save)), NULL);
+		len = read(fd, tmp, BUFFER_SIZE);
+		if (len == 0)
+			break ;
+		if (len < 0)
+			return (free(tmp), NULL);
+		tmp[len] = '\0';
+		save = ft_strjoin(save, tmp);
+		if (!save)
 			return (NULL);
-		read_byte = read(fd, buffer, BUFFER_SIZE);
-		buffer[read_byte] = '\0';
-		line = ft_strjoin(line, buffer);
-		if (!line)
-			return (free(buffer), NULL);
-		read_byte = read(fd, buffer, BUFFER_SIZE);
 	}
-	free(buffer);
-	return (line);
+	free(tmp);
+	return (save);
 }
 
-char	*ft_read_line(char *buffer)
+char	*ft_read_line(char **save)
 {
 	char	*line;
-	int		index;
+	int		i;
 
-	if ((!buffer) || (!buffer[0]))
-		return (NULL);
-	index = 0;
-	while ((buffer[index]) && (buffer[index] != '\n'))
-		index++;
-	if (buffer[index] == '\n')
-		index++;
-	line = malloc(index + 1);
+	if ((!(*save)) || (!(*save)[0]))
+		return ((free(*save)), (*save = NULL), (NULL));
+	i = 0;
+	while (((*save)[i]) && ((*save)[i] != '\n'))
+		i++;
+	if ((*save)[i] == '\n')
+		i++;
+	line = malloc(i + 1);
 	if (!line)
 		return (NULL);
-	index = 0;
-	while ((buffer[index]) && (buffer[index] != '\n'))
+	i = 0;
+	while (((*save)[i]) && ((*save)[i] != '\n'))
 	{
-		line[index] = buffer[index];
-		index++;
+		line[i] = (*save)[i];
+		i++;
 	}
-	if (buffer[index] == '\n')
-		line[index++] = '\n';
-	line[index] = '\0';
+	if ((*save)[i] == '\n')
+		line[i++] = '\n';
+	line[i] = '\0';
 	return (line);
 }
 
-char	*ft_next_line(char *buffer)
+char	*ft_next_line(char **tmp)
 {
-	char	*next_line;
-	int		index1;
-	int		index2;
+	char	*save;
+	int		i;
+	int		j;
 
-	if ((!buffer) || (!buffer[0]))
-		return (NULL);
-	index1 = 0;
-	while ((buffer[index1]) && (buffer[index1] != '\n'))
-		index1++;
-	if (buffer[index1] == '\n')
-		index1++;
-	next_line = malloc((ft_strlen(buffer) - index1) + 1);
-	if (!next_line)
-		return (NULL);
-	index2 = 0;
-	while (buffer[index1])
+	if ((!(*tmp)) || (!(*tmp)[0]))
+		return ((free(*tmp)), (*tmp = NULL), (NULL));
+	i = 0;
+	while (((*tmp)[i]) && ((*tmp)[i] != '\n'))
+		i++;
+	if ((*tmp)[i] == '\n')
+		i++;
+	save = malloc((ft_strlen((*tmp)) - i) + 1);
+	if (!save)
+		return (free(tmp), NULL);
+	j = 0;
+	while ((*tmp)[i])
 	{
-		next_line[index2] = buffer[index1 + index2];
-		index2++;
+		save[j] = (*tmp)[i + j];
+		j++;
 	}
-	next_line[index2] = '\0';
-	free(buffer);
-	return (next_line);
+	save[j] = '\0';
+	free((*tmp));
+	return (save);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*next_line;
+	static char	*save;
 	char		*line;
 
 	if ((fd < 0) || (BUFFER_SIZE <= 0) || (read(fd, 0, 0) < 0))
 		return (NULL);
-	next_line = ft_read_buffer_size(fd, next_line);
-	if (!next_line)
+	save = ft_read_buffer_size(fd, save);
+	if (!save)
 		return (NULL);
-	line = ft_read_line(next_line);
-	next_line = ft_next_line(next_line);
+	line = ft_read_line(&save);
+	if (!line)
+		return (NULL);
+	save = ft_next_line(&save);
+	if (!save[0])
+	{
+		free(save);
+		save = NULL;
+	}
 	return (line);
 }
