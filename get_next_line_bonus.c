@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: souaammo <souaammo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 19:12:06 by souaammo          #+#    #+#             */
-/*   Updated: 2024/11/15 15:26:35 by souaammo         ###   ########.fr       */
+/*   Updated: 2024/11/15 15:28:43 by souaammo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,19 +92,19 @@ char	*next_line(char **tmp)
 
 char	*get_next_line(int fd)
 {
-	static char	*save;
+	static char	*save[1024] = {NULL};
 	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, NULL, 0) < 0)
-		return (free(save), save = NULL, NULL);
-	save = read_buffer_size(fd, save);
-	if (!save)
+		return (free(save[fd]), save[fd] = NULL, NULL);
+	save[fd] = read_buffer_size(fd, save[fd]);
+	if (!save[fd])
 		return (NULL);
-	line = read_line(&save);
+	line = read_line(&save[fd]);
 	if (!line)
-		return (free(save), save = NULL, NULL);
-	save = next_line(&save);
-	if (save && !save[0])
-		return (free(save), save = NULL, line);
+		return (free(save[fd]), save[fd] = NULL, NULL);
+	save[fd] = next_line(&save[fd]);
+	if (save[fd] && !save[fd][0])
+		return (free(save[fd]), save[fd] = NULL, line);
 	return (line);
 }
