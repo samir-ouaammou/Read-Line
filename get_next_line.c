@@ -6,7 +6,7 @@
 /*   By: souaammo <souaammo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 19:12:06 by souaammo          #+#    #+#             */
-/*   Updated: 2024/11/15 11:07:28 by souaammo         ###   ########.fr       */
+/*   Updated: 2024/11/15 12:10:15 by souaammo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,13 @@
 
 char	*read_buffer_size(int fd, char *save)
 {
-	char	buffer[BUFFER_SIZE + 1];
-	ssize_t	bytes_read;
+	char	*buffer;
 	char	*temp;
+	ssize_t	bytes_read;
 
+	buffer = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
+	if (!buffer)
+		return (free(save), save = NULL, free(buffer), buffer = NULL, NULL);
 	while (!ft_strchr(save, '\n'))
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
@@ -26,10 +29,10 @@ char	*read_buffer_size(int fd, char *save)
 		buffer[bytes_read] = '\0';
 		temp = ft_strjoin(save, buffer);
 		if (!temp)
-			return (free(save), NULL);
+			return (free(buffer), buffer = NULL, free(save), save = NULL, NULL);
 		save = temp;
 	}
-	return (save);
+	return (free(buffer), buffer = NULL, save);
 }
 
 char	*read_line(char **save)
