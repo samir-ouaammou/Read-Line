@@ -6,7 +6,7 @@
 /*   By: souaammo <souaammo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 18:14:03 by souaammo          #+#    #+#             */
-/*   Updated: 2024/11/14 18:34:49 by souaammo         ###   ########.fr       */
+/*   Updated: 2024/11/15 11:06:47 by souaammo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,24 @@ size_t	ft_strlen(const char *str)
 	while (str[l])
 		l++;
 	return (l);
+}
+
+char	*ft_strdup(const char *str)
+{
+	size_t	i;
+	char	*res;
+
+	res = (char *)malloc(sizeof(char) + (ft_strlen(str) + 1));
+	if (!res)
+		return (NULL);
+	i = 0;
+	while (str[i])
+	{
+		res[i] = str[i];
+		i++;
+	}
+	res[i] = '\0';
+	return (res);
 }
 
 int	ft_strchr(const char *str, char c)
@@ -64,6 +82,10 @@ char	*ft_strjoin(char *s1, char *s2)
 
 	if (!s1 && !s2)
 		return (NULL);
+	if (!s1)
+		return (ft_strdup(s2));
+	if (!s2)
+		return (ft_strdup(s1));
 	result = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
 	if (!result)
 		return (NULL);
@@ -71,5 +93,6 @@ char	*ft_strjoin(char *s1, char *s2)
 	ft_strcat(result, s1);
 	ft_strcat(result, s2);
 	free(s1);
+	s1 = NULL;
 	return (result);
 }
