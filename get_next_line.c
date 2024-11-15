@@ -6,7 +6,7 @@
 /*   By: souaammo <souaammo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 19:12:06 by souaammo          #+#    #+#             */
-/*   Updated: 2024/11/15 12:10:15 by souaammo         ###   ########.fr       */
+/*   Updated: 2024/11/15 12:20:41 by souaammo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*read_buffer_size(int fd, char *save)
 
 	buffer = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!buffer)
-		return (free(save), save = NULL, free(buffer), buffer = NULL, NULL);
+		return (free(save), save = NULL, NULL);
 	while (!ft_strchr(save, '\n'))
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
