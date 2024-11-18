@@ -6,7 +6,7 @@
 /*   By: souaammo <souaammo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 19:12:06 by souaammo          #+#    #+#             */
-/*   Updated: 2024/11/15 15:28:43 by souaammo         ###   ########.fr       */
+/*   Updated: 2024/11/18 14:07:09 by souaammo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,10 +92,12 @@ char	*next_line(char **tmp)
 
 char	*get_next_line(int fd)
 {
-	static char	*save[1024] = {NULL};
+	static char	*save[1024];
 	char		*line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, NULL, 0) < 0)
+	if (fd < 0)
+		return (NULL);
+	if (BUFFER_SIZE <= 0 || read(fd, NULL, 0) < 0)
 		return (free(save[fd]), save[fd] = NULL, NULL);
 	save[fd] = read_buffer_size(fd, save[fd]);
 	if (!save[fd])
