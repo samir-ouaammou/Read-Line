@@ -6,7 +6,7 @@
 /*   By: souaammo <souaammo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 19:12:06 by souaammo          #+#    #+#             */
-/*   Updated: 2024/11/18 23:56:39 by souaammo         ###   ########.fr       */
+/*   Updated: 2024/11/19 16:37:44 by souaammo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*read_buffer_size(int fd, char *save)
 	char	*temp;
 	ssize_t	bytes_read;
 
-	buffer = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
+	buffer = (char *)malloc(((size_t)(BUFFER_SIZE) + 1) * sizeof(char));
 	if (!buffer)
 		return (free(save), save = NULL, NULL);
 	while (!ft_strchr(save, '\n'))
@@ -95,8 +95,7 @@ char	*get_next_line(int fd)
 	static char	*save;
 	char		*line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || BUFFER_SIZE >= 2147483647 || read(fd,
-			NULL, 0) < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, NULL, 0) < 0)
 		return (free(save), save = NULL, NULL);
 	save = read_buffer_size(fd, save);
 	if (!save)
