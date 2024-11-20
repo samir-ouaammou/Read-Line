@@ -6,7 +6,7 @@
 /*   By: souaammo <souaammo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 19:12:06 by souaammo          #+#    #+#             */
-/*   Updated: 2024/11/19 16:38:29 by souaammo         ###   ########.fr       */
+/*   Updated: 2024/11/20 14:30:15 by souaammo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,47 +16,47 @@ char	*read_buffer_size(int fd, char *save)
 {
 	char	*buffer;
 	char	*temp;
-	ssize_t	bytes_read;
+	ssize_t	len;
 
-	buffer = (char *)malloc(((size_t)(BUFFER_SIZE) + 1) * sizeof(char));
+	buffer = (char *)malloc((BUFFER_SIZE * sizeof(char)) + 1);
 	if (!buffer)
-		return (free(save), save = NULL, NULL);
+		return (free(save), NULL);
 	while (!ft_strchr(save, '\n'))
 	{
-		bytes_read = read(fd, buffer, BUFFER_SIZE);
-		if (bytes_read <= 0)
+		len = read(fd, buffer, BUFFER_SIZE);
+		if (len <= 0)
 			break ;
-		buffer[bytes_read] = '\0';
+		buffer[len] = '\0';
 		temp = ft_strjoin(save, buffer);
 		if (!temp)
-			return (free(buffer), buffer = NULL, free(save), save = NULL, NULL);
+			return (free(buffer), free(save), NULL);
 		save = temp;
 	}
-	return (free(buffer), buffer = NULL, save);
+	return (free(buffer), save);
 }
 
-char	*read_line(char **save)
+char	*read_line(char *save)
 {
 	char	*line;
 	int		i;
 
-	if ((!(*save)) || (!(*save)[0]))
-		return ((free(*save)), (*save = NULL), (NULL));
+	if ((!save) || (!save[0]))
+		return (NULL);
 	i = 0;
-	while (((*save)[i]) && ((*save)[i] != '\n'))
+	while (save[i] && save[i] != '\n')
 		i++;
-	if ((*save)[i] == '\n')
+	if (save[i] == '\n')
 		i++;
 	line = malloc(i + 1);
 	if (!line)
-		return (free(*save), *save = NULL, NULL);
+		return (NULL);
 	i = 0;
-	while (((*save)[i]) && ((*save)[i] != '\n'))
+	while ((save[i]) && (save[i] != '\n'))
 	{
-		line[i] = (*save)[i];
+		line[i] = save[i];
 		i++;
 	}
-	if ((*save)[i] == '\n')
+	if (save[i] == '\n')
 		line[i++] = '\n';
 	line[i] = '\0';
 	return (line);
@@ -102,7 +102,7 @@ char	*get_next_line(int fd)
 	save[fd] = read_buffer_size(fd, save[fd]);
 	if (!save[fd])
 		return (NULL);
-	line = read_line(&save[fd]);
+	line = read_line(save[fd]);
 	if (!line)
 		return (free(save[fd]), save[fd] = NULL, NULL);
 	save[fd] = next_line(&save[fd]);
