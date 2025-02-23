@@ -77,7 +77,7 @@ int main() {
 
 2. Navigate to the project directory:
    ```bash
-   cd 1337-Get_next_line
+   cd 1337-Get_next_line/Projects
    ```
 
 3. Compile the source files using `make`:
