@@ -22,7 +22,6 @@ The **get_next_line** project involves implementing a function that reads one li
 
 ---
 
-
 ## 📋 **Project Structure**
 
 The project is structured as follows:
