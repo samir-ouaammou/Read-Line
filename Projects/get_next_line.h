@@ -27,3 +27,4 @@ int		ft_strchr(const char *str, char c);
 char	*ft_strjoin(char *s1, char *s2);
 
 #endif
+
