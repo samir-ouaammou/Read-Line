@@ -71,12 +71,12 @@ int main() {
 
 1. Clone the repository to your local machine:
    ```bash
-   git clone https://github.com/samir-ouaammou/1337-Get_next_line
+   git clone https://github.com/samir-ouaammou/Read-Line
    ```
 
 2. Navigate to the project directory:
    ```bash
-   cd 1337-Get_next_line/Project
+   cd Read-Line/Project
    ```
 
 3. Compile the source files using `make`:
